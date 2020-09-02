@@ -110,6 +110,5 @@
     "prettier-eslint": "^9.0.1",
     "prettier-eslint-cli": "^5.0.0",
     "typescript": "^3.7.2"
-  },
-  "proxy": "http://35.154.188.137/api/v1"
+  }
 }
