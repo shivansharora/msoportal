@@ -1,0 +1,22 @@
+.box {
+  /* text-align: center; */
+}
+.coupon {
+  display: inline-block;
+  border: 1px dashed #000;
+  padding: 0.8em 1.2em;
+  position: relative;
+  font-weight: bold;
+  background: #FFC107;
+}
+
+span.scissors {
+  position: absolute;
+  top: -12px;
+  right: 0;
+}
+.inner {
+  display: inline-block;
+  border: 3px dotted #e8dddd;
+  padding: 1em 2em 2em 2em;
+}

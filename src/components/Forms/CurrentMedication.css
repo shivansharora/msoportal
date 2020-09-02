@@ -1,0 +1,22 @@
+.crud{
+    border-collapse: collapse;
+   width: 100%;
+ }
+ 
+ .crud td, .crud th {
+   border: 1px solid #ddd;
+   padding: 8px;
+ }
+ 
+ .crud tr:nth-child(even){background-color: #fcf6f6;}
+ 
+ /* .crud tr:hover {background-color: #ddd;} */
+ 
+ .crud th {
+   padding-top: 12px;
+   padding-bottom: 12px;
+   text-align: left;
+   background-color: #3CBC8D;
+   color: white;
+ }
+ 
