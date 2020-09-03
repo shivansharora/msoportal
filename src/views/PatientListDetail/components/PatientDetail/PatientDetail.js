@@ -20,7 +20,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@material-ui/icons/Send";
-
+import baseUrl from '../../../../utils/baseUrl'
 const useStyles = makeStyles(styles);
 
 const PatientDetail = (props) => {
@@ -46,7 +46,7 @@ const PatientDetail = (props) => {
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
       fetch(
-        `/send_patient_data/${patient.attributes.id}/${patient.attributes.last_visit_id}`,
+        `${baseUrl}/send_patient_data/${patient.attributes.id}/${patient.attributes.last_visit_id}`,
         {
           method: "PUT",
           headers: {

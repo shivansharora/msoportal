@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-
+import  baseUrl  from '../../utils/baseUrl';
 import Button from "../../components/CustomButtons/Button";
 import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
@@ -292,7 +292,7 @@ const EditPatient = (props) => {
 
   const uploadFile = (file) => {
     return new Promise((resolve, reject) => {
-      const URL = "/rails/active_storage/direct_uploads";
+      const URL = `${baseUrl}/rails/active_storage/direct_uploads`;
       const upload = new DirectUpload(file, URL);
       upload.create((error, blob) => {
         if (error) {
@@ -478,7 +478,7 @@ const EditPatient = (props) => {
           localStorage.getItem("jwt") !== undefined
         ) {
           let token = "Bearer " + localStorage.getItem("jwt");
-          fetch(`/patients/${props.match.params.id}`, {
+          fetch(`${baseUrl}/patients/${props.match.params.id}`, {
             method: "PUT",
             headers: {
               Authorization: token,
@@ -486,13 +486,11 @@ const EditPatient = (props) => {
             body: formData,
           }).then((response) => {
             response.json().then((data) => {
-              // console.log(response.status);
               if (response.status === 200) {
                 alert(data.message);
                 props.history.goBack();
               } else {
                 alert(data.error);
-                // document.getElementsByClassName("document_proof").innerHTML = "";
               }
             });
           });

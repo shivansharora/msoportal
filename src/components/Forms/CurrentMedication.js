@@ -11,6 +11,7 @@ import Button from "../CustomButtons/Button";
 import { Link as RouterLink } from "react-router-dom";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import baseUrl from '../../utils/baseUrl'
 
 import {
   Select,
@@ -237,7 +238,7 @@ const CurrentMedication = (props) => {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_current_medications/${props.match.params.id}`, {
+      fetch(`${baseUrl}/save_current_medications/${props.match.params.id}`, {
         method: "PUT",
         headers: {
           Authorization: token,

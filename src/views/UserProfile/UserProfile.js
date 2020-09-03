@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 
 import Button from "../../components/CustomButtons/Button";
 import Card from "../../components/Card/Card";
-
+import baseUrl from '../../utils/baseUrl'
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import CardAvatar from "../../components/Card/CardAvatar";
@@ -284,7 +284,7 @@ const UserProfile = (props) => {
 
   const uploadFile = (file) => {
     return new Promise((resolve, reject) => {
-      const URL = "/rails/active_storage/direct_uploads";
+      const URL = `${baseUrl}/rails/active_storage/direct_uploads`;
       const upload = new DirectUpload(file, URL);
       upload.create((error, blob) => {
         if (error) {
@@ -375,7 +375,7 @@ const UserProfile = (props) => {
           localStorage.getItem("jwt") !== undefined
         ) {
           let token = "Bearer " + localStorage.getItem("jwt");
-          fetch(`/edit_user_profile`, {
+          fetch(`${baseUrl}/edit_user_profile`, {
             method: "POST",
             headers: {
               Authorization: token,

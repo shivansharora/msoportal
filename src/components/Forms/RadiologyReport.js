@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import axios from "../../utils/axios1";
 import "./RadiologyReport.css";
 import { DirectUpload } from "@rails/activestorage";
+import baseUrl from '../../utils/baseUrl'
 
 import avtar from "../../assets/img/radio.png";
 
@@ -162,7 +163,7 @@ const RadiologyReport = (props) => {
 
   const uploadFiles = (file, index) => {
     return new Promise((resolve, reject) => {
-      const URL = "/rails/active_storage/direct_uploads";
+      const URL = `${baseUrl}/rails/active_storage/direct_uploads`;
       new Uploader(file, URL, index)
         .uploads(file)
         .then((message) => resolve(message))
@@ -181,7 +182,7 @@ const RadiologyReport = (props) => {
           localStorage.getItem("jwt") !== undefined
         ) {
           let token = "Bearer " + localStorage.getItem("jwt");
-          fetch(`/save_patient_documents/${patientid}`, {
+          fetch(`${baseUrl}/save_patient_documents/${patientid}`, {
             method: "PUT",
             headers: {
               Authorization: token,

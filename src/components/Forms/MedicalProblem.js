@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles} from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
+import baseUrl from '../../utils/baseUrl'
 
 import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
@@ -468,7 +469,7 @@ const MedicalProblem = (props) => {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_patient_medical_problems/${props.match.params.id}`, {
+      fetch(`${baseUrl}/save_patient_medical_problems/${props.match.params.id}`, {
         method: "PUT",
         headers: {
           Authorization: token,

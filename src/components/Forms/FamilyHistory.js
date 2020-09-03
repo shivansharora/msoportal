@@ -6,6 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
+import baseUrl from '../../utils/baseUrl'
 
 import CardFooter from "../../components/Card/CardFooter";
 import TextField from "@material-ui/core/TextField";
@@ -83,7 +84,7 @@ const FamilyHistory = (props) => {
           .then((response) => {
             if (mounted) {
               setDiseaseName(response.data);
-              // console.log(response.data)
+              console.log(response.data)
             }
           })
           .catch((error) => {
@@ -197,7 +198,7 @@ const FamilyHistory = (props) => {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_patient_family_histories/${props.match.params.id}`, {
+      fetch(`${baseUrl}/save_patient_family_histories/${props.match.params.id}`, {
         method: "PUT",
         headers: {
           Authorization: token,

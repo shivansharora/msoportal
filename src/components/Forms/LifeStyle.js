@@ -8,6 +8,7 @@ import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
 import CardFooter from "../../components/Card/CardFooter";
+import baseUrl from '../../utils/baseUrl'
 
 import { useForm, Controller } from "react-hook-form";
 import axios from "../../utils/axios1";
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LifeStyle = (props) => {
   const [currentStatus, setCurrentStatus] = useState([]);
-  const [alcohol, setAlcohol] = useState(false);
+  const [alcohol, setAlcohol] = useState('');
   const [tobacco, setTobacco] = useState();
   const [sleep, setSleep] = useState();
   const [frequencyList, setFrequencyList] = useState([]);
@@ -168,7 +169,6 @@ const LifeStyle = (props) => {
 
   useEffect(() => {
     if (lifestyle.length !== 0) {
-      setTimeout(() => {
       for (let i = 0; i < lifestyle.length; i++) {
 
         if (lifestyle[i].attributes.title.key === "alcohol") {
@@ -184,6 +184,7 @@ const LifeStyle = (props) => {
               lifestyle[i].attributes.frequency.key || ""
             );
           }
+         
           setValue("alcohol_quantity", lifestyle[i].attributes.quantity || "");
           setValue(
             "alcohol_start_datetime",
@@ -193,13 +194,9 @@ const LifeStyle = (props) => {
             "alcohol_end_datetime",
             lifestyle[i].attributes.end_date || ""
           );
-          if(lifestyle[i].attributes.current_status.key === 'quit'){
-            setAlcohol(true)
-
-          }else{
-            setAlcohol(false)
-
-          }
+          // if(lifestyle[i].attributes.current_status.key === 'quit'){
+          // setAlcohol(lifestyle[i].attributes.current_status.key)
+          // }
         } else if (lifestyle[i].attributes.title.key === "tobacco") {
           setValue("taboco_id", lifestyle[i].attributes.id || "");
           setValue(
@@ -244,13 +241,15 @@ const LifeStyle = (props) => {
           );
         }
       }
-    },10)
     }
   }, [lifestyle, setValue]);
 
   const getAlcoholField = (alcohol_current_status) => {
-    if(alcohol_current_status === 'quit')
-    setAlcohol(true);
+    if(alcohol_current_status === 'quit'){
+    setAlcohol(alcohol_current_status);
+    }else{
+      setAlcohol('')
+    }
   };
 
   const getTobaccoField = (tobacco_current_status) => {
@@ -658,7 +657,7 @@ const LifeStyle = (props) => {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_patient_lifestyles/${props.match.params.id}`, {
+      fetch(`${baseUrl}/save_patient_lifestyles/${props.match.params.id}`, {
         method: "PUT",
         headers: {
           Authorization: token,
@@ -761,17 +760,18 @@ const LifeStyle = (props) => {
                         </FormHelperText>
                       </FormControl>
                     </Grid>
-                     {/* {alcohol === true ? */}
+                     {/* {alcohol === 'quit' ?
+                      <React.Fragment>
+                      {AlcoholEndDate()}
+                    </React.Fragment> : */}
                     <React.Fragment>
                     {AlcoholFrequency()}
                     {AlcoholQuantity()}
                     {AlcoholStartDate()}
                     {AlcoholEndDate()}
                   </React.Fragment>
-                  {/* :
-                    <React.Fragment>
-                      {AlcoholEndDate()}
-                    </React.Fragment> */}
+                  {/* } */}
+                
 
                      {/* } */}
                     {/* )} */}

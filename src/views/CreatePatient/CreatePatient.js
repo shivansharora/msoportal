@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-
+import  baseUrl  from '../../utils/baseUrl';
 import CustomButtons from "../../components/CustomButtons/Button";
 import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
@@ -171,7 +171,6 @@ const CreatePatient = (props) => {
       mounted = false;
     };
   }, []);
-
   const getCity = (state_id) => {
     try {
       axios.get(`/get_cities/${state_id}`).then((response) => {
@@ -203,7 +202,7 @@ const CreatePatient = (props) => {
 
   const uploadFile = (file) => {
     return new Promise((resolve, reject) => {
-      const URL = "/rails/active_storage/direct_uploads";
+      const URL = `${baseUrl}/rails/active_storage/direct_uploads`;
       const upload = new DirectUpload(file, URL);
       upload.create((error, blob) => {
         if (error) {
@@ -383,7 +382,7 @@ const CreatePatient = (props) => {
           localStorage.getItem("jwt") !== undefined
         ) {
           let token = "Bearer " + localStorage.getItem("jwt");
-          fetch(`/patients`, {
+          fetch(`${baseUrl}/patients`, {
             method: "POST",
             headers: {
               Authorization: token,

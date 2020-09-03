@@ -7,6 +7,7 @@ import axios from "../../utils/axios1";
 import "./PathologyReport.css";
 import avtar from "../../assets/img/report1.png";
 import { DirectUpload } from "@rails/activestorage";
+import baseUrl from '../../utils/baseUrl'
 
 const styles = (theme) => ({
   root: {
@@ -186,7 +187,7 @@ const PathologyReport = (props) => {
 
   const uploadFile = (file, index) => {
     return new Promise((resolve, reject) => {
-      const URL = "/rails/active_storage/direct_uploads";
+      const URL = `${baseUrl}/rails/active_storage/direct_uploads`;
       new Uploader(file, URL, index)
         .upload(file)
         .then((message) => resolve(message))
@@ -205,7 +206,7 @@ const PathologyReport = (props) => {
           localStorage.getItem("jwt") !== undefined
         ) {
           let token = "Bearer " + localStorage.getItem("jwt");
-          fetch(`/save_patient_documents/${patientid}`, {
+          fetch(`${baseUrl}/save_patient_documents/${patientid}`, {
             method: "PUT",
             headers: {
               Authorization: token,

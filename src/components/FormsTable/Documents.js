@@ -10,6 +10,7 @@ import Fab from "@material-ui/core/Fab";
 import PathologyReport from "../Forms/PathologyReport";
 import RadioReport from "../Forms/RadiologyReport";
 import Document from "../Forms/DocumentUpload";
+import baseUrl from '../../utils/baseUrl'
 
 import {
   TableContainer,
@@ -141,7 +142,7 @@ console.log(documents)
         localStorage.getItem("jwt") !== undefined
       ) {
         let token = "Bearer " + localStorage.getItem("jwt");
-        fetch(`/save_patient_documents/${patient.attributes.id}`, {
+        fetch(`${baseUrl}/save_patient_documents/${patient.attributes.id}`, {
           method: "PUT",
           headers: {
             Authorization: token,

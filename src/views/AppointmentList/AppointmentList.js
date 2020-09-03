@@ -323,7 +323,7 @@ const AppointmentList = () => {
               headerColor="success"
               tabs={[
                 {
-                  tabName: "Cuurent Booking",
+                  tabName: "Current Booking",
                   tabIcon: BookIcon,
                   tabContent: (
                     <React.Fragment>

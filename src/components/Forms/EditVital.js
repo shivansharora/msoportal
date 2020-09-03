@@ -5,6 +5,7 @@ import Card from "../../components/Card/Card";
 
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
+import baseUrl from '../../utils/baseUrl'
 
 import TextField from "@material-ui/core/TextField";
 import convert from "convert-units";
@@ -361,7 +362,7 @@ class Vitals extends Component {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_patient_vitals/${this.state.patient_id}`, {
+      fetch(`${baseUrl}/save_patient_vitals/${this.state.patient_id}`, {
         method: "PUT",
         headers: {
           Authorization: token,

@@ -9,7 +9,7 @@ import "./CurrentMedication.css";
 import axios from "../../utils/axios1";
 import Button from "../CustomButtons/Button";
 import { Link as RouterLink } from "react-router-dom";
-
+import baseUrl from '../../utils/baseUrl'
 import {
   Grid,
   TextField,
@@ -136,7 +136,7 @@ const Allergy = (props) => {
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`/save_patient_allergies/${props.match.params.id}`, {
+      fetch(`${baseUrl}/save_patient_allergies/${props.match.params.id}`, {
         method: "PUT",
         headers: {
           Authorization: token,
