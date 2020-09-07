@@ -9,6 +9,8 @@ import avatar from "../../../../assets/img/patient.png";
 import styles from "../../../../assets/jss/material-dashboard-react/views/PatientViewCard";
 import PatientTab from "../../../../components/PatientTab/PatientTab";
 import { Link } from "@material-ui/core";
+import { withRouter } from 'react-router';
+import '../../../../assets/css/toast.css'
 
 // import Tooltip from "@material-ui/core/Tooltip";
 import Fab from "@material-ui/core/Fab";
@@ -21,6 +23,10 @@ import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import SendIcon from "@material-ui/icons/Send";
 import baseUrl from '../../../../utils/baseUrl'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 const useStyles = makeStyles(styles);
 
 const PatientDetail = (props) => {
@@ -56,9 +62,16 @@ const PatientDetail = (props) => {
       ).then((response) => {
         response.json().then((data) => {
           if (response.status === 200) {
-            alert(data.message);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              // props.history.push(`/flow_board`);
+              // props.router.push('/flow_board')
+            }, 1000);
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
@@ -188,8 +201,9 @@ const PatientDetail = (props) => {
           <PatientTab patient={patient} />
         </Grid>
       </Grid>
+      <ToastContainer/>
     </div>
   );
 };
 
-export default PatientDetail;
+export default withRouter(PatientDetail);

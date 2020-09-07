@@ -7,9 +7,9 @@ export default function validate(values) {
   }
 
   /////////////////////////// duration_type //////////////////////////////////////
-  if (!values.duration_type) {
-    errors.duration_type = 'Duration Type is required';
-  }
+  // if (!values.duration_type) {
+  //   errors.duration_type = 'Duration Type is required';
+  // }
   /////////////////////////// progression //////////////////////////////////////
   // if (!values.progression) {
   //   errors.progression = 'Progression is required';

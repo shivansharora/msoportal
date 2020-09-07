@@ -16,6 +16,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import logo from "../../assets/img/chikitsamitra.png";
 import mso from "../../assets/img/mso1.jpg";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 import Spinner from "../../components/Loader/Loader";
 
 const schema = {
@@ -167,7 +170,7 @@ const LoginForm = (props) => {
             setIsSent(true);
             setTimeout(function() {
               props.history.push("/dashboard");
-            }, 4000);
+            }, 2000);
           })
           .catch((error) => {
             console.log("error " + error);
@@ -175,7 +178,7 @@ const LoginForm = (props) => {
       })
       .catch((error) => {
         if (error.response.data !== "") {
-          alert(error.response.data.error);
+          toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
         } else {
           alert(error.response.statusText);
         }
@@ -283,6 +286,7 @@ const LoginForm = (props) => {
                   </Link>
                 </Grid>
               </Grid>
+              <ToastContainer/>
             </form>
           </div>
         </Grid>

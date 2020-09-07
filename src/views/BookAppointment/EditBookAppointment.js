@@ -6,6 +6,10 @@ import { useForm, Controller } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
 import './PromoCode.css'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../components/toast.css'
+
 // core components
 import Button from "../../components/CustomButtons/Button";
 import Card from "../../components/Card/Card";
@@ -19,7 +23,6 @@ import BookIcon from "@material-ui/icons/Book";
 import Type from "./Type";
 import moment from "moment";
 import axios from "../../utils/axios1";
-import Spinner from "../../components/Loader/Loader";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 
@@ -63,7 +66,6 @@ const EditAppointment = (props) => {
   const [IsPregnantCheck, setIsPregnant] = useState();
   const [msoPromo, setMsoPromo] = useState();
   const [doctors, setDoctors] = useState([]);
-  const [isSent, setIsSent] = useState(false);
   const [individualDoctors, setIndividualDoctors] = useState([]);
   const [indiDoctor, setIndiDoctor] = useState();
   const [catDoctor, setCatDoctor] = useState('');
@@ -445,7 +447,6 @@ const EditAppointment = (props) => {
   };
 
   const onSubmit = (data) => {
-    setIsSent(false);
     if (
       appointmentDetail.attributes.patient.gender !== undefined
     ) {
@@ -492,16 +493,17 @@ const EditAppointment = (props) => {
           { headers: { Authorization: token } }
         )
         .then((response) => {
-          // console.log(response);
-          setIsSent(true);
-          setTimeout(function() {
+          toast(<p>{response.data.message}</p>, {
+            className: 'custom',
+            autoClose:1000
+          });
+          setTimeout(()=> {
             props.history.push("/book_appointment_list");
           }, 1000);
-          alert(response.data.message);
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
           } else {
             alert(error.response.statusText);
           }
@@ -891,6 +893,7 @@ const EditAppointment = (props) => {
                         >
                           Cancel
                         </Button>
+                        <ToastContainer/>
                       </CardFooter>
                     </Grid>
                   </Grid>
@@ -903,7 +906,7 @@ const EditAppointment = (props) => {
     );
   };
 
-  return <div>{isSent ? <Spinner /> : appointmentForm()}</div>;
+  return <div>{appointmentForm()}</div>;
 };
 
 export default EditAppointment;

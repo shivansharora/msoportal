@@ -8,6 +8,10 @@ import "./PathologyReport.css";
 import avtar from "../../assets/img/report1.png";
 import { DirectUpload } from "@rails/activestorage";
 import baseUrl from '../../utils/baseUrl'
+import '../../assets/css/toast.css'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const styles = (theme) => ({
   root: {
@@ -214,12 +218,14 @@ const PathologyReport = (props) => {
             body: formData,
           }).then((response) => {
             response.json().then((data) => {
-              // console.log(response.status);
               if (response.status === 200) {
-                alert(data.message);
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
                 handlePathologyCount()
               } else {
-                alert(data.error);
+                toast.error(<p>{data.error}</p>,{autoClose:3000}) 
               }
             });
           });
@@ -257,6 +263,7 @@ const PathologyReport = (props) => {
                   />
                   <span>Upload</span>
                 </div>
+                <ToastContainer/>
                 <br />
               </form>
             </CardBody>

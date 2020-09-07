@@ -14,7 +14,7 @@ import { DirectUpload } from "@rails/activestorage";
 
 import TextField from "@material-ui/core/TextField";
 import Alert from '@material-ui/lab/Alert';
-
+import '../../assets/css/toast.css';
 import WcIcon from "@material-ui/icons/Wc";
 import TodayIcon from "@material-ui/icons/Today";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
@@ -34,6 +34,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const styles = (theme) => ({
   root: {
@@ -384,10 +387,15 @@ const UserProfile = (props) => {
           }).then((response) => {
             response.json().then((data) => {
               if (response.status === 200) {
-                alert(data.message);
-                window.location.reload()
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
+                setTimeout(()=> {
+                  window.location.reload()
+                }, 1000);
               } else {
-                alert(data.error);
+                toast.error(<p>{data.error}</p>,{autoClose:3000}) 
               }
             });
           });
@@ -882,6 +890,7 @@ const UserProfile = (props) => {
                     </Grid>
                   </Grid>
                 </CardBody>
+                <ToastContainer/>
               </Card>
             ) : null}
           </Grid>

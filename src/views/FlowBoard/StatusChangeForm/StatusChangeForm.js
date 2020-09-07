@@ -11,6 +11,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "../../../components/CustomButtons/Button";
 import validate from "./Validation";
 import axios from "../../../utils/axios1";
+import '../../../assets/css/toast.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,24 +93,23 @@ const ChangeStatus = (props) => {
           { headers: { Authorization: token } }
         )
         .then((response) => {
-          console.log(response);
-          props.history.push("/flow_board");
-          alert(response.data.message);
+          toast(<p>{response.data.message}</p>, {
+            className: 'custom',
+            autoClose:1000
+          });
+          setTimeout(()=> {
+            props.history.push("/flow_board");
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
+
           } else {
             alert(error.response.statusText);
           }
         });
     }
-    // const formData = {
-    //     status: values.status,
-
-    // };
-
-    // console.log(JSON.stringify(formData));
   }
 
   return (
@@ -134,9 +136,6 @@ const ChangeStatus = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
-              {/* {errors.status && (
-                                <p className={classes.danger}>{errors.status}</p>
-                            )} */}
             </Grid>
           </Grid>
           <CardFooter style={{ marginLeft: 45 }}>

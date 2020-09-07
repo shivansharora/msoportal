@@ -13,9 +13,13 @@ import axios from "../../utils/axios1";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { DirectUpload } from "@rails/activestorage";
+import '../../assets/css/toast.css'
 
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -487,10 +491,15 @@ const EditPatient = (props) => {
           }).then((response) => {
             response.json().then((data) => {
               if (response.status === 200) {
-                alert(data.message);
-                props.history.goBack();
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
+                setTimeout(()=> {
+                  props.history.goBack();
+              }, 1000);
               } else {
-                alert(data.error);
+                toast.error(<p>{data.error}</p>,{autoClose:3000}) 
               }
             });
           });
@@ -894,6 +903,7 @@ const EditPatient = (props) => {
                   <Button component={RouterLink} to="/patient_list">
                     Cancel
                   </Button>
+                  <ToastContainer/>
                 </CardFooter>
               </CardBody>
             </Card>
@@ -951,7 +961,7 @@ const EditPatient = (props) => {
                       component={RouterLink}
                       to="create_patient/webcam"
                     >
-                      Upload Image
+                      Capture Image
                     </Button>
                   </Grid>
                 </Grid>

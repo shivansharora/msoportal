@@ -16,6 +16,10 @@ import {
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import '../../assets/css/toast.css'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -145,10 +149,15 @@ const Allergy = (props) => {
       }).then((response) => {
         response.json().then((data) => {
           if (response.status === 200) {
-            alert(data.message);
-            props.history.push(`/patient_list/${props.match.params.id}/${props.match.params.type}`);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              props.history.push(`/patient_list/${props.match.params.id}/${props.match.params.type}`);
+            }, 1000);
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
@@ -234,6 +243,7 @@ const Allergy = (props) => {
                   >
                     Cancel
                   </Button>
+                  <ToastContainer/>
                 </CardFooter>
               </form>
             </CardBody>

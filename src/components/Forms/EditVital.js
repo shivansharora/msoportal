@@ -7,6 +7,10 @@ import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import baseUrl from '../../utils/baseUrl'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../assets/css/toast.css'
+
 import TextField from "@material-ui/core/TextField";
 import convert from "convert-units";
 import round from "../../utils/round";
@@ -372,10 +376,15 @@ class Vitals extends Component {
         response.json().then((data) => {
           // console.log(response.status);
           if (response.status === 200) {
-            alert(data.message);
-            this.props.history.goBack();
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              this.props.history.goBack();
+           }, 1000);            
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
@@ -761,6 +770,7 @@ class Vitals extends Component {
                           Cancel
                         </Button>
                       )}
+                    <ToastContainer/>
                     </CardFooter>
                   </Grid>
                 </form>

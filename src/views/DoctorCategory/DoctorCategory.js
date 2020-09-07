@@ -6,6 +6,10 @@ import {
   TablePagination,
   TextField,
   Button,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem
 } from "@material-ui/core";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -519,6 +523,7 @@ const DoctorCategory = () => {
       name: data.name,
       designation: data.designation,
     };
+    console.log(params)
 
     if (
       localStorage.getItem("jwt") !== "" ||
@@ -802,7 +807,7 @@ const DoctorCategory = () => {
                               />
                             </Grid>
                             <Grid item xs={12} sm={2} md={2}>
-                              <Controller
+                              {/* <Controller
                                 as={<TextField />}
                                 error={Boolean(errors.designation)}
                                 name="designation"
@@ -813,7 +818,34 @@ const DoctorCategory = () => {
                                 type="text"
                                 variant="outlined"
                                 fullWidth
-                              />
+                              /> */}
+                                   <FormControl
+                        style={{ minWidth: 170 }}
+                        variant="filled"
+                        className={classes.formControl}
+                      >
+                        <InputLabel id="demo-simple-select-filled-label">
+                        Speciality
+                        </InputLabel>
+                        <Controller
+                          as={
+                            <Select
+                            labelId="demo-simple-select-filled-label"
+                            id="demo-simple-select-filled"
+                            style={{ backgroundColor: "white" }}
+                            >
+                              {specialities.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          }
+                          name="designation"
+                          control={control}
+                          defaultValue=""
+                        />
+                      </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={7} md={7}>
                               <Button
@@ -864,3 +896,40 @@ const DoctorCategory = () => {
 };
 
 export default DoctorCategory;
+
+const specialities = [
+	
+	{
+		value: 'Dermatologist',
+		label: 'Dermatologist',
+	},
+	{
+		value: 'General Physician',
+		label: 'General Physician',
+  },
+  {
+		value: 'Pulmonologist',
+		label: 'Pulmonologist',
+  },
+  {
+		value: 'Gynaecologist',
+		label: 'Gynaecologist',
+  },
+  {
+		value: 'Orthopaedic Surgeon',
+		label: 'Orthopaedic Surgeon',
+  },
+  {
+		value: 'Neurologist',
+		label: 'Neurologist',
+  },
+  {
+		value: 'Paediatrician',
+		label: 'Paediatrician',
+  },
+  {
+		value: 'Medicine MD',
+		label: 'Medicine MD',
+	},
+	
+];

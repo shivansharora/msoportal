@@ -12,7 +12,7 @@ import { Link as RouterLink } from "react-router-dom";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import baseUrl from '../../utils/baseUrl'
-
+import '../../assets/css/toast.css'
 import {
   Select,
   FormControl,
@@ -24,6 +24,9 @@ import {
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import CancelIcon from '@material-ui/icons/Cancel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -247,10 +250,16 @@ const CurrentMedication = (props) => {
       }).then((response) => {
         response.json().then((data) => {
           if (response.status === 200) {
-            alert(data.message);
-            props.history.push(`/vital/${props.match.params.id}/${props.match.params.type}`);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              props.history.push(`/vital/${props.match.params.id}/${props.match.params.type}`);
+
+            }, 1000);
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
@@ -409,6 +418,11 @@ const CurrentMedication = (props) => {
                                       }
                                     />
                                   </FormGroup>
+                                  {medicineDelete.includes(item.id) ? 
+                                  <CancelIcon
+                                  className={classes.icon}
+                                  style={{ color:'red' }}
+                                />:null}
                                   </React.Fragment>
                             }
 																
@@ -445,6 +459,7 @@ const CurrentMedication = (props) => {
                   >
                     Cancel
                   </Button>
+                  <ToastContainer/>
                 </CardFooter>
               </form>
             </CardBody>

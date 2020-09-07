@@ -18,6 +18,10 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Spinner from "../../components/Loader/Loader";
 
+import { ToastContainer, toast } from 'react-toastify';
+import '../../assets/css/toast.css'
+import 'react-toastify/dist/ReactToastify.min.css';
+
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -390,13 +394,17 @@ const CreatePatient = (props) => {
             body: formData,
           }).then((response) => {
             response.json().then((data) => {
-              // console.log(response.status);
               if (response.status === 200) {
-                alert(data.message);
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
                 blockButton(true)
+                setTimeout(function() {
                 props.history.push(`/create_appointment/${data.data.data.attributes.id}`);
+              }, 1000);
               } else {
-                alert(data.error);
+              toast.error(<p>{data.error}</p>,{autoClose:3000}) 
                 blockButton(false)
 
               }
@@ -406,7 +414,6 @@ const CreatePatient = (props) => {
       })
       .catch((error) => console.log(error));
   };
-
 
   const patientForm = () => {
     return (
@@ -450,7 +457,6 @@ const CreatePatient = (props) => {
                         error={Boolean(errors.mobile)}
                         name="mobile"
                         rules={{
-                          // required: "Mobile Number is required",
                           pattern: {
                             value: /^[0-9]*$/,
                             message: "Only Numbers are allowed",
@@ -482,7 +488,6 @@ const CreatePatient = (props) => {
                         error={Boolean(errors.email)}
                         name="email"
                         rules={{
-                          // required: "Email is required",
                           pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                             message: "Invalid email address",
@@ -592,14 +597,11 @@ const CreatePatient = (props) => {
                     <Grid item xs={12} sm={12} md={12}>
                       <Controller
                         as={<TextField />}
-                        // error={Boolean(errors.address)}
                         name="address"
-                        // rules={{ required: "Address is required" }}
                         control={control}
                         defaultValue=""
                         label="Address"
                         type="text"
-                        // helperText={errors.address && errors.address.message}
                         fullWidth
                       />
                     </Grid>
@@ -607,7 +609,6 @@ const CreatePatient = (props) => {
                     <Grid item xs={12} sm={4} md={4}>
                       <FormControl
                         style={{ minWidth: 170 }}
-                        // error={Boolean(errors.state_id)}
                       >
                         <InputLabel id="demo-simple-select-label">
                           State
@@ -624,7 +625,6 @@ const CreatePatient = (props) => {
                             </Select>
                           }
                           name="state_id"
-                          // rules={{ required: "State is required" }}
                           control={control}
                           onChange={([selected]) => {
                             getCity(selected.target.value);
@@ -633,7 +633,6 @@ const CreatePatient = (props) => {
                           defaultValue=""
                         />
                         <FormHelperText>
-                          {/* {errors.state_id && errors.state_id.message} */}
                         </FormHelperText>
                       </FormControl>
                     </Grid>
@@ -656,12 +655,10 @@ const CreatePatient = (props) => {
                             </Select>
                           }
                           name="city_id"
-                          // rules={{ required: "City is required" }}
                           control={control}
                           defaultValue=""
                         />
                         <FormHelperText>
-                          {/* {errors.city_id && errors.city_id.message} */}
                         </FormHelperText>
                       </FormControl>
                     </Grid>
@@ -672,7 +669,6 @@ const CreatePatient = (props) => {
                         error={Boolean(errors.pincode)}
                         name="pincode"
                         rules={{
-                          // required: "Pincode is required",
                           pattern: {
                             value: /^[0-9]*$/,
                             message: "Only Numbers are allowed",
@@ -704,7 +700,6 @@ const CreatePatient = (props) => {
                         error={Boolean(errors.emergency_contact_no)}
                         name="emergency_contact_no"
                         rules={{
-                          // required: "Emergency Contact is required",
                           pattern: {
                             value: /^[0-9]*$/,
                             message: "Only Numbers are allowed",
@@ -739,7 +734,6 @@ const CreatePatient = (props) => {
                         error={Boolean(errors.alternate_contact_no)}
                         name="alternate_contact_no"
                         rules={{
-                          // required: "Alternate Contact is required",
                           pattern: {
                             value: /^[0-9]*$/,
                             message: "Only Numbers are allowed",
@@ -771,37 +765,37 @@ const CreatePatient = (props) => {
                     <Grid item xs={12} sm={6} md={6}>
                       <Controller
                         as={<TextField />}
-                        // error={Boolean(errors.emergency_contact_person)}
                         name="emergency_contact_person"
-                        // rules={{ required: "Emergency Contact Person is required" }}
                         control={control}
                         defaultValue=""
                         label="Emergency Contact Person"
                         type="text"
-                        // helperText={errors.emergency_contact_person && errors.emergency_contact_person.message}
                         fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6}>
                       <Controller
                         as={<TextField />}
-                        // error={Boolean(errors.emergency_contact_relationship)}
                         name="emergency_contact_relationship"
-                        // rules={{ required: "Emergency Contact Relationship is required" }}
                         control={control}
                         defaultValue=""
                         label="Emergency Contact Relationship"
                         type="text"
-                        // helperText={errors.emergency_contact_relationship && errors.emergency_contact_relationship.message}
                         fullWidth
                       />
                     </Grid>
                   </Grid>
                   <CardFooter style={{ float: "right" }}>
-                    <Button className={classes.button} style={{ backgroundColor:'rgb(61, 170, 153)' }} id="register" type="submit">Register</Button>
+                    <Button className={classes.button}
+                     style={{ backgroundColor:'rgb(61, 170, 153)' }}
+                      id="register"
+                       type="submit"
+                       >Register
+                       </Button>
                     <CustomButtons component={RouterLink} to="/patient_list">
                       Cancel
                     </CustomButtons>
+                  <ToastContainer/>
                   </CardFooter>
                 </CardBody>
               </Card>
@@ -855,7 +849,7 @@ const CreatePatient = (props) => {
                         component={RouterLink}
                         to="create_patient/webcam"
                       >
-                        Upload Image
+                        Capture Image
                       </CustomButtons>
                     </Grid>
                   </Grid>

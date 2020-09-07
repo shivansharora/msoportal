@@ -8,6 +8,11 @@ import "./RadiologyReport.css";
 import { DirectUpload } from "@rails/activestorage";
 import baseUrl from '../../utils/baseUrl'
 
+import '../../assets/css/toast.css'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 import avtar from "../../assets/img/radio.png";
 
 const styles = (theme) => ({
@@ -190,12 +195,14 @@ const RadiologyReport = (props) => {
             body: formData,
           }).then((response) => {
             response.json().then((data) => {
-              // console.log(response.status);
               if (response.status === 200) {
-                alert(data.message);
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
                 handleRadioCount()
               } else {
-                alert(data.error);
+                toast.error(<p>{data.error}</p>,{autoClose:3000}) 
               }
             });
           });
@@ -237,6 +244,7 @@ const RadiologyReport = (props) => {
                   />
                   <span>Upload</span>
                 </div>
+                <ToastContainer/>
                 <br />
               </form>
             </CardBody>

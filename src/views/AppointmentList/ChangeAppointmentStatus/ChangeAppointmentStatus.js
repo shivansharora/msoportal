@@ -6,11 +6,14 @@ import CardBody from "../../../components/Card/CardBody";
 import CardFooter from "../../../components/Card/CardFooter";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link as RouterLink } from "react-router-dom";
-
+import '../../../assets/css/toast.css'
 import TextField from "@material-ui/core/TextField";
 import Button from "../../../components/CustomButtons/Button";
 import validate from "./Validation";
 import axios from "../../../utils/axios1";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,13 +93,18 @@ const ChangeStatus = (props) => {
           { headers: { Authorization: token } }
         )
         .then((response) => {
-          // console.log(response);
-          props.history.push("/book_appointment_list");
-          alert(response.data.message);
+          toast(<p>{response.data.message}</p>, {
+            className: 'custom',
+            autoClose:1000
+          });
+          setTimeout(()=> {
+            props.history.push("/book_appointment_list");
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
+
           } else {
             alert(error.response.statusText);
           }

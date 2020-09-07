@@ -12,6 +12,9 @@ import CardFooter from "../../components/Card/CardFooter";
 import CardHeader from "../../components/Card/CardHeader";
 import TextField from "@material-ui/core/TextField";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../assets/css/toast.css'
 import { useForm, Controller } from "react-hook-form";
 
 import axios from "../../utils/axios1";
@@ -76,12 +79,17 @@ const ChangeUserPassword = (props) => {
           { headers: { Authorization: token } }
         )
         .then((response) => {
-          window.location.reload()
-          alert(response.data.message);
+          toast(<p>{response.data.message}</p>, {
+            className: 'custom',
+            autoClose:1000
+          });
+          setTimeout(()=> {
+            window.location.reload()
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
           } else {
             alert(error.response.statusText);
           }
@@ -170,6 +178,7 @@ const ChangeUserPassword = (props) => {
                 </Grid>
                 <CardFooter style={{ float: "right" }}>
                   <Button type="submit">Submit</Button>
+                  <ToastContainer/>
                 </CardFooter>
               </CardBody>
             </Card>

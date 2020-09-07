@@ -8,6 +8,10 @@ import "./Document.css";
 import { DirectUpload } from "@rails/activestorage";
 import avtar from "../../assets/img/document1.png";
 import baseUrl from '../../utils/baseUrl'
+import '../../assets/css/toast.css'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const styles = (theme) => ({
   root: {
@@ -189,13 +193,14 @@ const UploadDocument = (props) => {
             body: formData,
           }).then((response) => {
             response.json().then((data) => {
-              // console.log(response.status);
               if (response.status === 200) {
-                alert(data.message);
+                toast(<p>{data.message}</p>, {
+                  className: 'custom',
+                  autoClose:1000
+                });
                 handleCount()
-                // window.location.reload(false);
               } else {
-                alert(data.error);
+                toast.error(<p>{data.error}</p>,{autoClose:3000}) 
               }
             });
           });
@@ -233,6 +238,7 @@ const UploadDocument = (props) => {
                   />
                   <span>Upload</span>
                 </div>
+                <ToastContainer/>
                 <br />
               </form>
             </CardBody>

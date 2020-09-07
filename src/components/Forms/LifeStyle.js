@@ -9,10 +9,14 @@ import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
 import CardFooter from "../../components/Card/CardFooter";
 import baseUrl from '../../utils/baseUrl'
+import '../../assets/css/toast.css'
 
 import { useForm, Controller } from "react-hook-form";
 import axios from "../../utils/axios1";
 import Button from "../CustomButtons/Button";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import {
   Select,
@@ -39,7 +43,6 @@ const LifeStyle = (props) => {
   const [currentStatus, setCurrentStatus] = useState([]);
   const [alcohol, setAlcohol] = useState('');
   const [tobacco, setTobacco] = useState();
-  const [sleep, setSleep] = useState();
   const [frequencyList, setFrequencyList] = useState([]);
   const [title, setTitle] = useState([]);
   const [lifestyle, setLifestyle] = useState([]);
@@ -247,18 +250,17 @@ const LifeStyle = (props) => {
   const getAlcoholField = (alcohol_current_status) => {
     if(alcohol_current_status === 'quit'){
     setAlcohol(alcohol_current_status);
-    }else{
-      setAlcohol('')
     }
+    // else{
+    //   setAlcohol('')
+    // }
   };
 
   const getTobaccoField = (tobacco_current_status) => {
     setTobacco(tobacco_current_status);
   };
 
-  const getSleepField = (sleep_current_status) => {
-    setSleep(sleep_current_status);
-  };
+
   const AlcoholFrequency = () => {
     return (
       <Grid item xs={12} sm={2} md={2}>
@@ -568,7 +570,6 @@ const LifeStyle = (props) => {
   };
 
   const onSubmit = (data) => {
-    // if (lifestyle.length !== 0) {
     if (data.alcohol_end_datetime === undefined) {
       data.alcohol_end_datetime = "";
     }
@@ -587,6 +588,16 @@ const LifeStyle = (props) => {
     }
     if (data.alcohol_start_datetime === undefined) {
       data.alcohol_start_datetime = "";
+    }
+
+    if (data.tobacco_frequency === undefined) {
+      data.tobacco_frequency = "";
+    }
+    if (data.tobacco_quantity === undefined) {
+      data.tobacco_quantity = "";
+    }
+    if (data.tobacco_start_datetime === undefined) {
+      data.tobacco_start_datetime = "";
     }
 
     var alcohol = {};
@@ -622,8 +633,6 @@ const LifeStyle = (props) => {
     if (data.sleep_id !== "") {
       sleep_pattern.id = data.sleep_id;
     }
-
-    // console.log(alcohol);
 
     var formData = new FormData();
 
@@ -667,15 +676,19 @@ const LifeStyle = (props) => {
         response.json().then((data) => {
           // console.log(response.status);
           if (response.status === 200) {
-            alert(data.message);
-            props.history.push(`/family_history/${props.match.params.id}/${props.match.params.type}`);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              props.history.push(`/family_history/${props.match.params.id}/${props.match.params.type}`);
+            }, 1000);           
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
     }
-    // }
   };
 
   return (
@@ -760,28 +773,17 @@ const LifeStyle = (props) => {
                         </FormHelperText>
                       </FormControl>
                     </Grid>
-                     {/* {alcohol === 'quit' ?
+                     {alcohol === 'quit' ?
                       <React.Fragment>
                       {AlcoholEndDate()}
-                    </React.Fragment> : */}
+                    </React.Fragment> :
                     <React.Fragment>
                     {AlcoholFrequency()}
                     {AlcoholQuantity()}
                     {AlcoholStartDate()}
                     {AlcoholEndDate()}
                   </React.Fragment>
-                  {/* } */}
-                
-
-                     {/* } */}
-                    {/* )} */}
-                    {/* {alcohol === 'current' && ( */}
-                    {/* <React.Fragment>
-									{AlcoholFrequency()}
-									{AlcoholQuantity()}
-									{AlcoholStartDate()}
-								</React.Fragment> */}
-                    {/* )} */}
+                   } 
                   </Grid>
                   <Grid item xs={12} sm={4} md={4}>
                     <Grid item xs={12} sm={2} md={2}>
@@ -823,21 +825,17 @@ const LifeStyle = (props) => {
                         </FormHelperText>
                       </FormControl>
                     </Grid>
-                    {/* {tobacco === 'quit' && ( */}
+                    {tobacco === 'quit' ?
+                     <React.Fragment>
+                     {TobaccoEndDate()}
+                   </React.Fragment>:
                     <React.Fragment>
                       {TobaccoFrequency()}
                       {TobaccoQuantity()}
                       {TobaccoStartDate()}
                       {TobaccoEndDate()}
                     </React.Fragment>
-                    {/* )} */}
-                    {/* {tobacco === 'current' && ( */}
-                    {/* <React.Fragment>
-									{TobaccoFrequency()}
-									{TobaccoQuantity()}
-									{TobaccoStartDate()}
-								</React.Fragment> */}
-                    {/* )} */}
+                     }
                   </Grid>
                   <Grid item xs={12} sm={4} md={4}>
                     <Grid item xs={12} sm={2} md={2}>
@@ -867,10 +865,6 @@ const LifeStyle = (props) => {
                           rules={{ required: "Current Status is required" }}
                           control={control}
                           defaultValue=""
-                          onChange={([e]) => {
-                            getSleepField(e.target.value);
-                            return e;
-                          }}
                         />
                         <FormHelperText>
                           {errors.sleep_current_status &&
@@ -878,21 +872,12 @@ const LifeStyle = (props) => {
                         </FormHelperText>
                       </FormControl>
                     </Grid>
-                    {/* {sleep === 'quit' && ( */}
                     <React.Fragment>
-                      {SleepFrequency()}
-                      {SleepQuantity()}
-                      {SleepStartDate()}
-                      {SleepEndDate()}
-                    </React.Fragment>
-                    {/* )} */}
-                    {/* {sleep === 'current' && ( */}
-                    {/* <React.Fragment>
-									{SleepFrequency()}
-									{SleepQuantity()}
-									{SleepStartDate()}
-								</React.Fragment> */}
-                    {/* )} */}
+                    {SleepFrequency()}
+                    {SleepQuantity()}
+                    {SleepStartDate()}
+                    {SleepEndDate()}
+                  </React.Fragment>
                   </Grid>
                 </Grid>
 
@@ -907,6 +892,7 @@ const LifeStyle = (props) => {
                   >
                     Cancel
                   </Button>
+                  <ToastContainer/>
                 </CardFooter>
               </form>
             </CardBody>

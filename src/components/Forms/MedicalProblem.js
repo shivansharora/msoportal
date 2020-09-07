@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import baseUrl from '../../utils/baseUrl'
+import baseUrl from "../../utils/baseUrl";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../assets/css/toast.css'
 import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
@@ -17,6 +20,7 @@ import CustomInput from "../CustomInput/CustomInput";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import MenuItem from "@material-ui/core/MenuItem";
 import axios from "../../utils/axios1";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +85,8 @@ const MedicalProblem = (props) => {
   const [hindiChief, setHindiChief] = useState();
 
   const [durationType, setDurationType] = useState([]);
+  const [durationTypeValue , setDurationTypeValue] = useState()
+  const [startDate , setStartDate] = useState()
 
   const [progressionList, setprogressionList] = useState([]);
   const [progression, setProgression] = useState();
@@ -100,8 +106,6 @@ const MedicalProblem = (props) => {
   const valueKey = "Value";
 
   const handleChanged = (e, value) => {
-    // setId(value.id)
-    // console.log(value);
     if (value === null) {
       console.log("");
     } else {
@@ -133,16 +137,6 @@ const MedicalProblem = (props) => {
       // console.log(value)
     }
   };
-
-  // const handleChangeAssociated = (e) => {
-  //   var options = e.target.value;
-  //   var value = [];
-  //   for (var i = 0, l = options.length; i < l; i++) {
-  //     if (options[i].selected) {
-  //       value.push(options[i].value);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     let mounted = true;
@@ -305,34 +299,21 @@ const MedicalProblem = (props) => {
     };
   }, []);
 
-  // const multi = (e) => {
-  //   var options = e.target.options.value;
-  //   var values = [];
-  //   for (var i = 0, l = options.length; i < l; i++) {
-  //     if (options[i].selected) {
-  //       value.push(options[i].values);
-  //     }
-  //   }
-  //   console.log(values);
-  // };
+
+
 
   const getOnset = (event, occurrence) => {
     var bb = event.target.value;
-    // console.log(bb);
     setOnset(bb);
-    // console.log(occurrence.key);
     setOnsetHindi(occurrence.key);
   };
   const getProgression = (event, progressionList) => {
     var pl = event.target.value;
-    // console.log(pl);
     setProgression(pl);
-    // console.log(progressionList.key);
     setProgressionHindi(progressionList.key);
   };
 
   const aggravateFactor = (value) => {
-    // console.log(value);
     var ss = "";
     for (let i = 0; i < value.length; i++) {
       ss = ss + "," + value[i].key;
@@ -364,9 +345,7 @@ const MedicalProblem = (props) => {
 
   const getCurent = (event, current) => {
     var cs = event.target.value;
-    // console.log(cs);
     setCurrentStatus(cs);
-    // console.log(current.key);
     setCurrentHindi(current.key);
   };
 
@@ -374,6 +353,68 @@ const MedicalProblem = (props) => {
     medicalProblem,
     validate
   );
+
+  function SplitTime(numberOfHours) {
+    var Days = Math.floor(numberOfHours / 24);
+    var Remainder = numberOfHours % 24;
+    var Hours = Math.floor(Remainder);
+    return { Days: Days, Hours: Hours };
+  }
+
+  function dateFromDay(year, day){
+    var date = new Date(year, 0); 
+    return new Date(date.setDate(day)); 
+  }
+
+
+  var result;
+  const handleDurationType = (event) => {
+    var durationtype =event.target.value
+    setDurationTypeValue(durationtype)
+    if (durationtype === "hours") {
+      var timeResult = SplitTime(values.duration);
+      var now = new Date();
+      var start = new Date(now.getFullYear(), 0, 0);
+      var diff = now - start;
+      var oneDay = 1000 * 60 * 60 * 24;
+      var day = Math.floor(diff / oneDay);
+      var finalNthDay = day - timeResult.Days
+      result = dateFromDay(now.getFullYear(), finalNthDay);
+      setStartDate(moment(result).format('YYYY-MM-DD')) 
+    } else if (durationtype === "weeks") {
+      var WeekIntoDays = values.duration * 7;
+       now = new Date();
+       start = new Date(now.getFullYear(), 0, 0);
+       diff = now - start;
+       oneDay = 1000 * 60 * 60 * 24;
+       day = Math.floor(diff / oneDay);
+       finalNthDay = day - WeekIntoDays
+      result = dateFromDay(now.getFullYear(), finalNthDay); 
+      setStartDate(moment(result).format('YYYY-MM-DD'))
+    } else if (durationtype === "months") {
+      var MonthsIntoDays = values.duration * 30;
+      now = new Date();
+      start = new Date(now.getFullYear(), 0, 0);
+      diff = now - start;
+      oneDay = 1000 * 60 * 60 * 24;
+      day = Math.floor(diff / oneDay);
+      finalNthDay = day - MonthsIntoDays
+     result = dateFromDay(now.getFullYear(), finalNthDay);
+     setStartDate(moment(result).format('YYYY-MM-DD')) 
+    }else{
+      var Days = values.duration;
+      now = new Date();
+      start = new Date(now.getFullYear(), 0, 0);
+      diff = now - start;
+      oneDay = 1000 * 60 * 60 * 24;
+      day = Math.floor(diff / oneDay);
+      finalNthDay = day - Days
+     result = dateFromDay(now.getFullYear(), finalNthDay);
+     console.log(result) 
+     setStartDate(moment(result).format('YYYY-MM-DD')) 
+    }
+  
+  };
 
   function medicalProblem() {
     var aggravate_factor = "";
@@ -407,6 +448,10 @@ const MedicalProblem = (props) => {
       alert("Please Select Chief Complaint");
       return false;
     }
+    if (durationTypeValue === undefined) {
+      alert("Please Select Duration Type");
+      return false;
+    }
 
     if (progression === "" || progression === undefined) {
       alert("Please Select Progression");
@@ -424,10 +469,6 @@ const MedicalProblem = (props) => {
       alert("Please Select Relieving Factor");
       return false;
     }
-    if (values.start_datetime === "" || values.start_datetime === undefined) {
-      alert("Please Select Start Date");
-      return false;
-    }
     if (current === "" || current === undefined) {
       alert("Please Select Current Status");
       return false;
@@ -439,13 +480,13 @@ const MedicalProblem = (props) => {
       complaint_id: value,
       complaint_title: chiefComplaint,
       duration: values.duration,
-      duration_type: values.duration_type,
+      duration_type: durationTypeValue,
       progression: progression,
       occurrence: onset,
       aggravating_factor: aggravate_factor,
       relieving_factor: relieve_factor,
       current_status: current,
-      start_date: values.start_datetime,
+      start_date: startDate,
       end_date: values.end_datetime,
       associated_symptom_ids: asso_id,
       associated_symptoms: asso_symp,
@@ -463,32 +504,40 @@ const MedicalProblem = (props) => {
     // for (let pair of formData.entries()) {
     //   console.log(pair[0] + ": " + pair[1]);
     // }
-    
+
     if (
       localStorage.getItem("jwt") !== "" ||
       localStorage.getItem("jwt") !== undefined
     ) {
       let token = "Bearer " + localStorage.getItem("jwt");
-      fetch(`${baseUrl}/save_patient_medical_problems/${props.match.params.id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: token,
-        },
-        body: formData,
-      }).then((response) => {
+      fetch(
+        `${baseUrl}/save_patient_medical_problems/${props.match.params.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      ).then((response) => {
         response.json().then((data) => {
           // console.log(response.status);
           if (response.status === 200) {
-            alert(data.message);
-            props.history.push(`/current_medication/${props.match.params.id}/${props.match.params.type}`);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              props.history.push(
+                `/current_medication/${props.match.params.id}/${props.match.params.type}`
+              );
+            }, 1000);
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
     }
-
-
   }
 
   return (
@@ -506,18 +555,6 @@ const MedicalProblem = (props) => {
               <form onSubmit={handleSubmit} noValidate>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6} md={6}>
-                    {/* <Autocomplete style={{ marginTop: -13 }}
-									// {...defaultProps}
-									options={options}
-						    //    options={options.map(e => ({ label: e.phrase_english, value: e.id}))}
-
-									id=" chief_complaint"
-									// defaultValue={option => option.}
-									onInputChange={handleInputChange}
-									getOptionLabel={option => option.phrase_english}
-									renderInput={params => <TextField {...params}  label="Chief Complaint" margin="normal" />}
-								/> */}
-
                     <CustomAutocomplete
                       id=" chief_complaint"
                       onChange={handleChanged}
@@ -557,8 +594,8 @@ const MedicalProblem = (props) => {
                       select
                       name="duration_type"
                       label="Duration Type"
-                      value={values.duration_type || ""}
-                      onChange={handleChange}
+                      value={durationTypeValue || ""}
+                      onChange={handleDurationType}
                     >
                       {durationType.map((option) => (
                         <MenuItem key={option.key} value={option.key}>
@@ -566,9 +603,6 @@ const MedicalProblem = (props) => {
                         </MenuItem>
                       ))}
                     </TextField>
-                    {errors.duration_type && (
-                      <p className={classes.danger}>{errors.duration_type}</p>
-                    )}
                   </Grid>
                   <Grid item xs={12} sm={6} md={6}>
                     <TextField
@@ -712,9 +746,6 @@ const MedicalProblem = (props) => {
                         </MenuItem>
                       ))}
                     </TextField>
-                    {/* {errors.current_status && (
-											<p className={classes.danger}>{errors.current_status}</p>
-										)} */}
                   </Grid>
                   <Grid item xs={12} sm={6} md={6}>
                     <CustomInput
@@ -729,25 +760,18 @@ const MedicalProblem = (props) => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={6}>
-                    <TextField
-                      id="start_datetime"
+                  <TextField
+                  style={{ width : 180 }}
+                      required
+                      id="start_date"
+                      name="start_date"
                       label="Start Date"
-                      type="date"
-                      name="start_datetime"
-                      value={values.start_datetime || ""}
-                      onChange={handleChange}
-                      className={classes.textField}
-                      // InputProps={{
-                      //     inputProps: { min:`${mindate}`}
-                      // }}
-                      InputLabelProps={{
-                        shrink: true,
+                      inputProps={{
+                        readOnly: true,
                       }}
+                      value={startDate || ""}
                     />
 
-                    {/* {errors.start_datetime && (
-								<p className={classes.danger}>{errors.start_datetime}</p>
-							)} */}
                   </Grid>
 
                   <Grid item xs={12} sm={6} md={6}>
@@ -811,6 +835,7 @@ const MedicalProblem = (props) => {
                     >
                       Cancel
                     </Button>
+                    <ToastContainer/>
                   </CardFooter>
                 </Grid>
               </form>

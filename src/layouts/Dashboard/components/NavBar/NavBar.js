@@ -32,10 +32,13 @@ import Hidden from "@material-ui/core/Hidden";
 import Poppers from "@material-ui/core/Popper";
 import Notifications from "@material-ui/icons/Notifications";
 import classNames from "classnames";
-
+import '../../../../assets/css/toast.css'
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -202,16 +205,20 @@ const NavBar = (props) => {
       axios
         .get(`/logout/${id} `, { headers: { Authorization: token } })
         .then((response) => {
-          console.log(response);
-          alert(response.data.message);
+          toast(<p>{response.data.message}</p>, {
+            className: 'custom',
+            autoClose:1000
+          });
           if (response !== null || response !== "" || response !== undefined) {
             localStorage.clear();
-            props.history.push("/auth/login");
           }
+          setTimeout(()=> {
+            props.history.push("/auth/login");
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
           } else {
             alert(error.response.statusText);
           }
@@ -237,13 +244,12 @@ const NavBar = (props) => {
         { user: user },
         { headers: { Authorization: token } })
         .then((response) => {
-          // console.log(response);
-          alert(response.data.message);
           window.location.reload()
         })
         .catch((error) => {
           if (error.response.data !== "") {
-            alert(error.response.data.error);
+            toast.error(<p>{error.response.data.error}</p>,{autoClose:3000}) 
+
           } else {
             alert(error.response.statusText);
           }
@@ -447,6 +453,7 @@ const NavBar = (props) => {
                 Logout
               </Button>
             </div>
+            <ToastContainer/>
           </Toolbar>
         </AppBar>
         <Drawer

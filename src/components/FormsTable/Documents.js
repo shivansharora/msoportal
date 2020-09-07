@@ -11,6 +11,10 @@ import PathologyReport from "../Forms/PathologyReport";
 import RadioReport from "../Forms/RadiologyReport";
 import Document from "../Forms/DocumentUpload";
 import baseUrl from '../../utils/baseUrl'
+import '../../assets/css/toast.css'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import {
   TableContainer,
@@ -117,8 +121,6 @@ console.log(documents)
    
   }
   const deleteDocument = (id) => {
-    // console.log(documents);
-    // console.log(id);
     const document_data = {
       id: id,
       _destroy: "1",
@@ -152,14 +154,16 @@ console.log(documents)
           response.json().then((data) => {
             // console.log(response.status);
             if (response.status === 200) {
-              alert(data.message);
+              toast(<p>{data.message}</p>, {
+                className: 'custom',
+                autoClose:1000
+              });
               const newArray = documents.filter(function(el) {
                 return el.attributes.id !== id;
               });
-              // console.log(newArray);
               setDocument(newArray);
             } else {
-              alert(data.error);
+              toast.error(<p>{data.error}</p>,{autoClose:3000}) 
             }
           });
         });
@@ -261,6 +265,7 @@ console.log(documents)
                   </TableBody>
                 </Table>
               </TableContainer>
+              <ToastContainer/>
             </CardBody>
           </Card>
         </Grid>

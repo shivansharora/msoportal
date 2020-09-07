@@ -8,6 +8,10 @@ import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
 import baseUrl from '../../utils/baseUrl'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import '../../assets/css/toast.css'
+
 import CardFooter from "../../components/Card/CardFooter";
 import TextField from "@material-ui/core/TextField";
 import { useForm, Controller } from "react-hook-form";
@@ -207,10 +211,16 @@ const FamilyHistory = (props) => {
       }).then((response) => {
         response.json().then((data) => {
           if (response.status === 200) {
-            alert(data.message);
-            props.history.push(`/allergy/${props.match.params.id}/${props.match.params.type}`);
+            toast(<p>{data.message}</p>, {
+              className: 'custom',
+              autoClose:1000
+            });
+            setTimeout(()=> {
+              props.history.push(`/allergy/${props.match.params.id}/${props.match.params.type}`);
+
+            }, 1000);           
           } else {
-            alert(data.error);
+            toast.error(<p>{data.error}</p>,{autoClose:3000}) 
           }
         });
       });
@@ -468,6 +478,7 @@ const FamilyHistory = (props) => {
                   >
                     Cancel
                   </Button>
+                  <ToastContainer/>
                 </CardFooter>
               </form>
             </CardBody>
