@@ -8,7 +8,7 @@ import "./PathologyReport.css";
 import avtar from "../../assets/img/report1.png";
 import { DirectUpload } from "@rails/activestorage";
 import baseUrl from '../../utils/baseUrl'
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';

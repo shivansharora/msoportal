@@ -12,7 +12,7 @@ import { Link as RouterLink } from "react-router-dom";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import baseUrl from '../../utils/baseUrl'
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 import {
   Select,
   FormControl,

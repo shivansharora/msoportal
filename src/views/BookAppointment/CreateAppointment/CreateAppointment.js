@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import { useForm, Controller } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
 import "../PromoCode.css";
-import '../../../assets/css/toast.css'
+import '../../../components/toast.css'
 // core components
 import Button from "../../../components/CustomButtons/Button";
 import Card from "../../../components/Card/Card";

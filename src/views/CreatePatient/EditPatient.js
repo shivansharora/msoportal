@@ -13,7 +13,7 @@ import axios from "../../utils/axios1";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { DirectUpload } from "@rails/activestorage";
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

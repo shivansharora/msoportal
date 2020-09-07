@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';

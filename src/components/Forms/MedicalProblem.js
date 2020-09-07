@@ -5,7 +5,7 @@ import baseUrl from "../../utils/baseUrl";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";

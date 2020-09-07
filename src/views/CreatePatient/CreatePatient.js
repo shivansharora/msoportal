@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Spinner from "../../components/Loader/Loader";
 
 import { ToastContainer, toast } from 'react-toastify';
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import TextField from "@material-ui/core/TextField";

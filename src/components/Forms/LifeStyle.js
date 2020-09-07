@@ -9,7 +9,7 @@ import CardBody from "../../components/Card/CardBody";
 import Card from "../../components/Card/Card";
 import CardFooter from "../../components/Card/CardFooter";
 import baseUrl from '../../utils/baseUrl'
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 
 import { useForm, Controller } from "react-hook-form";
 import axios from "../../utils/axios1";

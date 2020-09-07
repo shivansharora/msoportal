@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import Card from "../../components/Card/Card";
-import '../../assets/css/toast.css'
+import '../../components/toast.css'
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import baseUrl from '../../utils/baseUrl'
